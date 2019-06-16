@@ -159,6 +159,9 @@ def run():
     epochs = 5
     batch_size = 1 
 
+   #config = tf.ConfigProto()
+   #config.gpu_options.allow_growth = True
+   #with tf.Session(config=config) as sess:
     with tf.Session() as sess:
 
 
