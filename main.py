@@ -156,6 +156,8 @@ def run():
 
     learning_rate = tf.placeholder(dtype=tf.float32, name='learning_rate')
     correct_label = tf.placeholder(dtype=tf.float32, shape=[None, None, None, num_classes], name='correct_label' )
+    epochs = 5
+    batch_size = 1 
 
     with tf.Session() as sess:
 
