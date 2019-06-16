@@ -96,12 +96,14 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     # TODO: Implement function
     
     # See FCN8 - Classification & Loss in classroom
-    logits = tf.reshape(input, (-1, num_classes))
+    logits = tf.reshape(nn_last_layer, (-1, num_classes))
+    logits = tf.reshape(correct_label, (-1, num_classes))
     cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, labels))
 
     # Now use an Adam optimizer, feed it the cross entropy loss
+    train_op = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy_loss)
 
-    return None, None, None
+    return logits, cross_entropy_loss, train_op 
 tests.test_optimize(optimize)
 
 
@@ -145,6 +147,8 @@ def run():
     # You'll need a GPU with at least 10 teraFLOPS to train on.
     #  https://www.cityscapes-dataset.com/
 
+    learning_rate = tf.placeholder("float", None)
+    correct_label = tf.placeholder("float", None)
     with tf.Session() as sess:
 
 
@@ -165,7 +169,7 @@ def run():
         # Final layer of DNN (result)
         layer_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
         # gives logits, cross entropy
-        optimize()
+        logits, cross_entropy_loss, train_op = optimize(nn_last_layer, correct_label, learning_rate, num_classes)
 
         # TODO: Train NN using the train_nn function
 
