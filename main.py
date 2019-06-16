@@ -99,8 +99,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     
     # See FCN8 - Classification & Loss in classroom
     logits = tf.reshape(nn_last_layer, (-1, num_classes))
-    logits = tf.reshape(correct_label, (-1, num_classes))
-    cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, labels))
+    correct_label = tf.reshape(correct_label, (-1, num_classes))
+    cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label))
 
     # Now use an Adam optimizer, feed it the cross entropy loss
     train_op = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy_loss)
