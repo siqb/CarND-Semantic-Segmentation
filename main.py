@@ -7,6 +7,8 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 
+PROB = 0.5
+RATE = 0.01
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
@@ -108,7 +110,7 @@ tests.test_optimize(optimize)
 
 
 def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
-             correct_label, keep_prob, prob, learning_rate, rate):
+             correct_label, keep_prob, learning_rate):
     """
     Train neural network and print out the loss during training.
     :param sess: TF Session
@@ -130,8 +132,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             sess.run([train_op, cross_entropy_loss], 
                       feed_dict={input_image:image, 
                                  correct_label:label, 
-                                 keep_prob:prob, 
-                                 learning_rate:rate}
+                                 keep_prob:PROB, 
+                                 learning_rate:RATE})
 
 tests.test_train_nn(train_nn)
 
@@ -143,6 +145,8 @@ def run():
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
 
+   #PROB = 0.5
+   #RATE = 0.01
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
 
@@ -152,8 +156,6 @@ def run():
 
     learning_rate = tf.placeholder(dtype=tf.float32, name='learning_rate')
     correct_label = tf.placeholder(dtype=tf.float32, shape=[None, None, None, num_classes], name='correct_label' )
-    PROB = 0.5
-    RATE = 0.01
 
     with tf.Session() as sess:
 
@@ -178,8 +180,13 @@ def run():
         logits, train_op, cross_entropy_loss = optimize(layer_output, correct_label, learning_rate, num_classes)
 
         # TODO: Train NN using the train_nn function
-        train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
-             correct_label, keep_probability, PROB, learning_rate, RATE):
+        sess.run(tf.global_variables_initializer())
+        train_nn(sess, epochs, 
+                 batch_size, get_batches_fn, 
+                 train_op, cross_entropy_loss, 
+                 input_image, correct_label, 
+                 keep_probability,
+                 learning_rate)
 
         # TODO: Save inference data using helper.save_inference_samples
         #  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
