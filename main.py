@@ -103,7 +103,7 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     # Now use an Adam optimizer, feed it the cross entropy loss
     train_op = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy_loss)
 
-    return logits, cross_entropy_loss, train_op 
+    return logits, train_op, cross_entropy_loss 
 tests.test_optimize(optimize)
 
 
@@ -175,7 +175,7 @@ def run():
         # Final layer of DNN (result)
         layer_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
         # gives logits, cross entropy
-        logits, cross_entropy_loss, train_op = optimize(nn_last_layer, correct_label, learning_rate, num_classes)
+        logits, train_op, cross_entropy_loss = optimize(layer_output, correct_label, learning_rate, num_classes)
 
         # TODO: Train NN using the train_nn function
         train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
