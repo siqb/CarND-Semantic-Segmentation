@@ -108,7 +108,7 @@ tests.test_optimize(optimize)
 
 
 def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
-             correct_label, keep_prob, learning_rate):
+             correct_label, keep_prob, prob, learning_rate, rate):
     """
     Train neural network and print out the loss during training.
     :param sess: TF Session
@@ -127,9 +127,12 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
         for image, label in get_batches_fn(batch_size):
             # create feed dict (input image, label, keep probability, learning rate)
             # Now we can do something like loss = session.run and do this on train optimizer and cross entropy loss
-            pass
+            sess.run([train_op, cross_entropy_loss], 
+                      feed_dict={input_image:image, 
+                                 correct_label:label, 
+                                 keep_prob:prob, 
+                                 learning_rate:rate}
 
-    pass
 tests.test_train_nn(train_nn)
 
 
@@ -149,6 +152,9 @@ def run():
 
     learning_rate = tf.placeholder("float", None)
     correct_label = tf.placeholder("float", None)
+    PROB = 0.5
+    RATE = 0.01
+
     with tf.Session() as sess:
 
 
@@ -172,6 +178,8 @@ def run():
         logits, cross_entropy_loss, train_op = optimize(nn_last_layer, correct_label, learning_rate, num_classes)
 
         # TODO: Train NN using the train_nn function
+        train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
+             correct_label, keep_probability, PROB, learning_rate, RATE):
 
         # TODO: Save inference data using helper.save_inference_samples
         #  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
