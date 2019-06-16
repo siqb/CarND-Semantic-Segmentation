@@ -150,8 +150,8 @@ def run():
     # You'll need a GPU with at least 10 teraFLOPS to train on.
     #  https://www.cityscapes-dataset.com/
 
-    learning_rate = tf.placeholder("float", None)
-    correct_label = tf.placeholder("float", None)
+    learning_rate = tf.placeholder(dtype=tf.float32, name='learning_rate')
+    correct_label = tf.placeholder(dtype=tf.float32, shape=[None, None, None, num_classes], name='correct_label' )
     PROB = 0.5
     RATE = 0.01
 
