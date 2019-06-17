@@ -8,8 +8,8 @@ import project_tests as tests
 
 
 PROB = 0.5
-RATE = 0.01
-STDDEV = 1e-3
+RATE = 0.0001
+STDDEV = 0.001 
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
@@ -196,7 +196,7 @@ def run():
 
     learning_rate = tf.placeholder(dtype=tf.float32, name='learning_rate')
     correct_label = tf.placeholder(dtype=tf.float32, shape=[None, None, None, num_classes], name='correct_label' )
-    epochs = 5
+    epochs = 20 
    #batch_size = 256 
    #batch_size = 128
    #batch_size = 64 
