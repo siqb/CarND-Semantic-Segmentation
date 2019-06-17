@@ -160,7 +160,10 @@ def run():
     learning_rate = tf.placeholder(dtype=tf.float32, name='learning_rate')
     correct_label = tf.placeholder(dtype=tf.float32, shape=[None, None, None, num_classes], name='correct_label' )
     epochs = 5
-    batch_size = 1 
+   #batch_size = 256 
+   #batch_size = 128
+   #batch_size = 64 
+    batch_size = 32 
 
    #config = tf.ConfigProto()
    #config.gpu_options.allow_growth = True
