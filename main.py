@@ -9,6 +9,7 @@ import project_tests as tests
 
 PROB = 0.5
 RATE = 0.01
+STDDEV = 1e-3
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
@@ -68,6 +69,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
                                        num_classes, 
                                        1, 
                                        padding='same', 
+                                       kernel_initializer=tf.random_normal_initializer(stddev=STDDEV),
                                        kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     # Now we can upsample
@@ -76,6 +78,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
                                                 4, 
                                                 2, 
                                                 padding='same', 
+                                                kernel_initializer=tf.random_normal_initializer(stddev=STDDEV),
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     # Now do similar as above but add skip connections
@@ -83,6 +86,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
                                        num_classes, 
                                        1, 
                                        padding='same', 
+                                       kernel_initializer=tf.random_normal_initializer(stddev=STDDEV),
                                        kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     skip_connection1 = tf.add(decoder_layer1, conv_1x1_layer4)
@@ -92,12 +96,14 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
                                                 4, 
                                                 2, 
                                                 padding='same', 
+                                                kernel_initializer=tf.random_normal_initializer(stddev=STDDEV),
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3_out, 
                                        num_classes, 
                                        1, 
                                        padding='same', 
+                                       kernel_initializer=tf.random_normal_initializer(stddev=STDDEV),
                                        kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     skip_connection2 = tf.add(decoder_layer2, conv_1x1_layer3)
@@ -107,6 +113,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
                                              16, 
                                              8, 
                                              padding='same', 
+                                             kernel_initializer=tf.random_normal_initializer(stddev=STDDEV),
                                              kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     # If you wanna print the shape of a layer
