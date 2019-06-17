@@ -126,7 +126,10 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     """
     # TODO: Implement function
     for epoch in range(0, epochs):
+        print("Training next epoch")
         for image, label in get_batches_fn(batch_size):
+            print("Training next batch")
+            
             # create feed dict (input image, label, keep probability, learning rate)
             # Now we can do something like loss = session.run and do this on train optimizer and cross entropy loss
             sess.run([train_op, cross_entropy_loss], 
