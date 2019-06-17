@@ -7,9 +7,9 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 
-PROB = 0.5
+PROB = 0.8
 RATE = 0.0001
-STDDEV = 0.001 
+STDDEV = 1e-3
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
