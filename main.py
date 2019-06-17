@@ -169,11 +169,12 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             
             # create feed dict (input image, label, keep probability, learning rate)
             # Now we can do something like loss = session.run and do this on train optimizer and cross entropy loss
-            sess.run([train_op, cross_entropy_loss], 
+            _, loss = sess.run([train_op, cross_entropy_loss], 
                       feed_dict={input_image:image, 
                                  correct_label:label, 
                                  keep_prob:PROB, 
                                  learning_rate:RATE})
+            print("Loss for this batch was " + str(loss))    
 
 tests.test_train_nn(train_nn)
 
